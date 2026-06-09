@@ -1,0 +1,20 @@
+{
+  "name": "vietphd-forum",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "VietPhD community forum — standalone static site wrapping GitHub Discussions, deployed to Cloudflare Workers (forum.vjsonline.org)",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "astro": "^6.1.10"
+  },
+  "devDependencies": {
+    "wrangler": "^4.98.0"
+  }
+}

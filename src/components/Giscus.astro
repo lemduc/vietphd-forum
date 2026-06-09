@@ -1,0 +1,60 @@
+---
+// On-site general discussion, backed by GitHub Discussions on lemduc/vietphd-forum.
+// IDs from giscus.app (repo public + giscus GitHub App installed). The forum
+// itself lives on GitHub; this just embeds one shared thread on the landing page.
+interface Props {
+  lang?: string;
+  mapping?: 'pathname' | 'specific' | 'url' | 'title';
+  term?: string;
+  category?: string;
+  categoryId?: string;
+  heading?: string;
+  subtitle?: string;
+}
+const {
+  lang = 'vi',
+  mapping = 'specific',
+  term = 'forum-home',
+  category = 'Announcements',
+  categoryId = 'DIC_kwDOS032kM4C-yAv',
+  heading = 'Thảo luận chung · General discussion',
+  subtitle = 'Đăng nhập bằng GitHub để tham gia. · Sign in with GitHub to join.',
+} = Astro.props as Props;
+
+const repo = 'lemduc/vietphd-forum';
+const repoId = 'R_kgDOS032kA';
+const theme = 'light';
+---
+<section class="giscus-section" aria-label={heading}>
+  <h2>{heading}</h2>
+  <p class="giscus-sub">{subtitle}</p>
+  <div class="giscus"></div>
+</section>
+
+<script define:vars={{ repo, repoId, category, categoryId, mapping, term, theme, lang }}>
+  const mount = document.querySelector('.giscus-section .giscus');
+  if (mount && !mount.dataset.loaded) {
+    mount.dataset.loaded = '1';
+    const s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    const attrs = {
+      'data-repo': repo,
+      'data-repo-id': repoId,
+      'data-category': category,
+      'data-category-id': categoryId,
+      'data-mapping': mapping,
+      'data-strict': '0',
+      'data-reactions-enabled': '1',
+      'data-emit-metadata': '0',
+      'data-input-position': 'top',
+      'data-theme': theme,
+      'data-lang': lang,
+      'data-loading': 'lazy',
+    };
+    if (mapping === 'specific' && term) attrs['data-term'] = term;
+    for (const [k, v] of Object.entries(attrs)) s.setAttribute(k, v);
+    mount.appendChild(s);
+  }
+</script>

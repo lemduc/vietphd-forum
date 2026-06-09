@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vietphd-forum",
+  "compatibility_date": "2026-06-07",
+  "observability": { "enabled": true },
+  // Assets-only Worker: no `main` script, Cloudflare just serves the static
+  // build output. `wrangler deploy` publishes it; add the custom domain
+  // forum.vjsonline.org in the Cloudflare dashboard (or via `routes`).
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

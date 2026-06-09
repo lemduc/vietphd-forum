@@ -1,0 +1,112 @@
+---
+import '../styles/global.css';
+import Giscus from '../components/Giscus.astro';
+
+const DISCUSSIONS = 'https://github.com/lemduc/vietphd-forum/discussions';
+const catUrl = (name) =>
+  `${DISCUSSIONS}?discussions_q=${encodeURIComponent(`category:"${name}"`)}`;
+
+// Forum boards — mirror the original VietPhD structure + the high-value
+// categories from the recovered archive. Create matching GitHub Discussion
+// categories; until they exist these links show an empty filter (never a 404).
+const categories = [
+  { emoji: '🎓', ghName: 'Scholarships', en: 'Scholarships', vi: 'Học bổng', desc: 'Funding, fellowships, country-by-country opportunities (Italy, Japan, Korea, US…).' },
+  { emoji: '📝', ghName: 'Admissions', en: 'Admissions', vi: 'Tuyển sinh', desc: 'Application strategy, contacting professors, profile evaluation, results.' },
+  { emoji: '🛂', ghName: 'Visa & Immigration', en: 'Visa & Immigration', vi: 'Visa & Định cư', desc: 'F1/J1/H1B, VEF, work permits, settling abroad after the PhD.' },
+  { emoji: '📚', ghName: 'Test Prep', en: 'Test Prep', vi: 'Luyện thi', desc: 'GRE, GMAT, TOEFL, IELTS — strategies, materials, score sharing.' },
+  { emoji: '💼', ghName: 'Career & Return Home', en: 'Career & Return Home', vi: 'Sự nghiệp & Về nước', desc: 'Postdoc vs industry, staying abroad vs returning to Vietnam.' },
+  { emoji: '💬', ghName: 'General', en: 'General', vi: 'Chung', desc: 'Introductions, daily life, and everything in between.' },
+];
+
+const stats = [
+  { num: '5,667', label: 'archived threads' },
+  { num: '98K', label: 'replies' },
+  { num: '26.5M', label: 'lifetime views' },
+  { num: '2007', label: 'since' },
+];
+---
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Diễn đàn VietPhD — Cộng đồng Nghiên cứu sinh Việt Nam</title>
+    <meta name="description" content="Diễn đàn VietPhD — nơi hội tụ của nghiên cứu sinh Việt Nam khắp thế giới. Học bổng, du học, visa, sự nghiệp. Hồi sinh từ kho lưu trữ 2007–2012, vận hành bằng GitHub Discussions." />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container bar">
+        <a class="brand" href="/">
+          <img src="/brand/vjs-logo.gif" alt="" width="40" height="40" />
+          <span>
+            <span class="wordmark">Viet<span class="accent">PhD</span></span>
+            <span class="kicker">Vietnamese PhD Community</span>
+          </span>
+        </a>
+        <div class="header-actions">
+          <a class="btn btn-ghost" href="https://www.vjsonline.org" target="_blank" rel="noopener">
+            <span class="full">Vietnam Journal of Science</span><span aria-hidden="true">↗</span>
+          </a>
+          <a class="btn btn-primary" href={DISCUSSIONS} target="_blank" rel="noopener">Vào diễn đàn</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container inner">
+        <h1>Diễn đàn VietPhD</h1>
+        <p class="lead">Nơi hội tụ của nghiên cứu sinh Việt Nam khắp thế giới — học bổng, du học, visa, và con đường sau tiến sĩ.</p>
+        <p class="lead-en">The community of Vietnamese PhD students and scholars worldwide — scholarships, admissions, visas, and life after the PhD.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href={DISCUSSIONS} target="_blank" rel="noopener">Vào diễn đàn trên GitHub →</a>
+          <a class="btn btn-ghost" href="#categories">Xem các chuyên mục</a>
+        </div>
+        <p class="revived">↻ Hồi sinh từ <strong>kho lưu trữ gốc 2007–2012</strong> · Revived from the original VietPhD archive.</p>
+      </div>
+    </section>
+
+    <div class="stats">
+      <div class="container" style="display:flex; flex-wrap:wrap; gap:2.5rem;">
+        {stats.map((s) => (
+          <div class="stat"><div class="num">{s.num}</div><div class="label">{s.label}</div></div>
+        ))}
+      </div>
+    </div>
+
+    <section class="block container" id="categories">
+      <h2 class="section-title">Chuyên mục · Categories</h2>
+      <p class="section-sub">Mỗi chuyên mục là một bảng thảo luận trên GitHub Discussions. · Each board is a GitHub Discussions category.</p>
+      <div class="grid">
+        {categories.map((c) => (
+          <a class="card" href={catUrl(c.ghName)} target="_blank" rel="noopener">
+            <span class="emoji">{c.emoji}</span>
+            <span class="name">{c.en}</span>
+            <span class="vi">{c.vi}</span>
+            <span class="desc">{c.desc}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="block container">
+      <Giscus />
+    </section>
+
+    <footer class="site-footer">
+      <div class="container row">
+        <div>
+          <div class="wordmark" style="color:#fff; font-size:1.15rem;">Viet<span style="color:#7fd0ad;">PhD</span></div>
+          <p class="small">Hồi sinh bởi cộng đồng VEFFA · Revived by the VEFFA community.<br/>Vận hành bằng GitHub Discussions — không máy chủ, không cơ sở dữ liệu.</p>
+        </div>
+        <div class="small">
+          <a href="https://www.vjsonline.org" target="_blank" rel="noopener">vjsonline.org</a> ·
+          <a href={DISCUSSIONS} target="_blank" rel="noopener">GitHub Discussions</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
